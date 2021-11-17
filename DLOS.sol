@@ -5,6 +5,18 @@
 * 7% fee ( 5% burned , 1% marketing account , 1% telos reserve )
 */
 
+/**
+  
+
+   #DLOS features:
+   5% fee in burn 
+   1% fee send to DLOS marketing wallet
+   1% fee send to telos reserve wallet
+   
+   
+   
+ */
+
 pragma solidity ^0.6.12;
 
 abstract contract Context {
