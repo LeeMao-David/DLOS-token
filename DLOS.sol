@@ -327,13 +327,15 @@ contract Ownable is Context {
 }
 
 
-contract KHUSHAL is Context, IERC20, Ownable {
+contract DLOS is Context, IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
 
     mapping (address => uint256) private _rOwned;
     mapping (address => uint256) private _tOwned;
     mapping (address => mapping (address => uint256)) private _allowances;
+    mapping(address => bool) whitelist;
+    
 
     mapping (address => bool) private _isExcluded;
     address[] private _excluded;
@@ -354,6 +356,9 @@ contract KHUSHAL is Context, IERC20, Ownable {
     address payable public marketingAddress = payable(0x32ce97bD6E59e360002FACa981C20092651068Af);
     address payable public reserveAddress = payable(0xF119C8CB4f99055CAE3ec2f1c7A4f3253345dA92);
     mapping (address => uint256) public lastBuy;
+    
+    event AddedToWhitelist(address indexed account);
+    event RemovedFromWhitelist(address indexed account);
 
     constructor () public {
         _rOwned[_msgSender()] = _rTotal;
@@ -386,11 +391,15 @@ contract KHUSHAL is Context, IERC20, Ownable {
     }
 
     function transfer(address recipient, uint256 amount) public override returns (bool) {
-        _transfer(_msgSender(), recipient, amount.div(100).mul(93));
-        _transfer(_msgSender(), address(0x0000000000000000000000000000000000000001) ,amount.div(100).mul(5));
-        _transfer(_msgSender(), address(marketingAddress) ,amount.div(100).mul(1));
-        _transfer(_msgSender(), address(reserveAddress) ,amount.div(100).mul(1));
-        _showTotal = _showTotal - amount.div(100).mul(5);
+        if(isWhitelisted(_msgSender())){
+            _transfer(_msgSender(), recipient, amount);
+        }else{
+            _transfer(_msgSender(), recipient, amount.div(100).mul(93));
+            _transfer(_msgSender(), address(0x0000000000000000000000000000000000000001) ,amount.div(100).mul(5));
+            _transfer(_msgSender(), address(marketingAddress) ,amount.div(100).mul(1));
+            _transfer(_msgSender(), address(reserveAddress) ,amount.div(100).mul(1));
+            _showTotal = _showTotal - amount.div(100).mul(5);
+        }
         return true;
     }
 
@@ -404,12 +413,35 @@ contract KHUSHAL is Context, IERC20, Ownable {
     }
 
     function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
-        _transfer(sender, recipient, amount.div(100).mul(93));
-        _transfer(sender, address(0x0000000000000000000000000000000000000001) ,amount.div(100).mul(5));
-        _transfer(sender, address(marketingAddress) ,amount.div(100).mul(1));
-        _transfer(sender, address(reserveAddress) ,amount.div(100).mul(1));
-        _showTotal = _showTotal - amount.div(100).mul(5);
+        if(isWhitelisted(_msgSender())){
+            _transfer(sender, recipient, amount);
+        }else{
+            _transfer(sender, recipient, amount.div(100).mul(93));
+            _transfer(sender, address(0x0000000000000000000000000000000000000001) ,amount.div(100).mul(5));
+            _transfer(sender, address(marketingAddress) ,amount.div(100).mul(1));
+            _transfer(sender, address(reserveAddress) ,amount.div(100).mul(1));
+            _showTotal = _showTotal - amount.div(100).mul(5);
+        }
         return true;
+    }
+    
+     modifier onlyWhitelisted() {
+        require(isWhitelisted(msg.sender));
+        _;
+    }
+
+    function addWhitelist(address _address) public onlyOwner {
+        whitelist[_address] = true;
+        emit AddedToWhitelist(_address);
+    }
+
+    function removeWhitelist(address _address) public onlyOwner {
+        whitelist[_address] = false;
+        emit RemovedFromWhitelist(_address);
+    }
+
+    function isWhitelisted(address _address) public view returns(bool) {
+        return whitelist[_address];
     }
 
     function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
