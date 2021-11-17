@@ -341,13 +341,13 @@ contract DLOS is Context, IERC20, Ownable {
     address[] private _excluded;
    
     uint256 private constant MAX = ~uint256(0);
-    uint256 private constant _tTotal = 1000000000 * 10**6 ;
-    uint256 public _showTotal = 1000000000 * 10**6 ;
+    uint256 private constant _tTotal = 1000000000 * 10**6;
+    uint256 public _showTotal = 1000000000 * 10**6;
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
     uint256 private _tFeeTotal;
 
-    string private _name = 'KHUSHAL Coin';
-    string private _symbol = 'KHUSHAL';
+    string private _name = 'DLOS Coin';
+    string private _symbol = 'DLOS';
     uint8 private _decimals = 0;
     uint8 public transfertimeout = 15;
     uint256 public _maxTxAmount = 1000000000 * 10**6;
@@ -463,8 +463,9 @@ contract DLOS is Context, IERC20, Ownable {
     }
     
     function setMaxTxPercent(uint256 maxTxPercent) external onlyOwner() {
+        require(maxTxPercent > 0 , "Percent should more than zero");
         _maxTxAmount = _tTotal.mul(maxTxPercent).div(
-            100
+            1000
         );
     }
 
