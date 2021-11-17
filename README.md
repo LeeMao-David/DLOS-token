@@ -1,6 +1,6 @@
 # DLOS-token
 
-Icon : 
+Symbol : $DLOS
 
 ✔️ 7% fee on every transactions  
 ✔️ 5% send to burning wallet  
