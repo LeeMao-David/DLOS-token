@@ -2,20 +2,8 @@
 
 /**
 * Basic tokenomics 
-* 7% fee ( 5% burned , 1% marketing account , 1% telos reserve )
+* 7% fee ( 5% burned , 2% marketing account)
 */
-
-/**
-  
-
-   #DLOS features:
-   5% fee in burn 
-   1% fee send to DLOS marketing wallet
-   1% fee send to telos reserve wallet
-   
-   
-   
- */
 
 pragma solidity ^0.6.12;
 
@@ -353,8 +341,8 @@ contract DLOS is Context, IERC20, Ownable {
     address[] private _excluded;
    
     uint256 private constant MAX = ~uint256(0);
-    uint256 private constant _tTotal = 1000000000 * 10**6;
-    uint256 public _showTotal = 1000000000 * 10**6;
+    uint256 private constant _tTotal = 1000 * 10**6;
+    uint256 public _showTotal = 1000 * 10**6;
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
     uint256 private _tFeeTotal;
 
@@ -362,7 +350,7 @@ contract DLOS is Context, IERC20, Ownable {
     string private _symbol = 'DLOS';
     uint8 private _decimals = 0;
     uint8 public transfertimeout = 15;
-    uint256 public _maxTxAmount = 1000000000 * 10**6;
+    uint256 public _maxTxAmount = 1000 * 10**6;
 
     address public uniswapPair;
     address payable public marketingAddress = payable(0x32ce97bD6E59e360002FACa981C20092651068Af);
