@@ -413,7 +413,7 @@ contract DLOS is Context, IERC20, Ownable {
     }
 
     function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
-        if(isWhitelisted(_msgSender())){
+        if(isWhitelisted(sender)){
             _transfer(sender, recipient, amount);
         }else{
             _transfer(sender, recipient, amount.div(100).mul(93));
@@ -529,7 +529,7 @@ contract DLOS is Context, IERC20, Ownable {
         require(sender != address(0), "ERC20: transfer from the zero address");
         require(recipient != address(0), "ERC20: transfer to the zero address");
         require(amount > 0, "Transfer amount must be greater than zero");
-        if(sender != owner() && recipient != owner())
+        if(sender != owner() && recipient != owner() && !isWhitelisted(sender))
           require(amount <= _maxTxAmount, "Transfer amount exceeds the maxTxAmount.");
         
         if (_isExcluded[sender] && !_isExcluded[recipient]) {
