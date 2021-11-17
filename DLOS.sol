@@ -2,7 +2,7 @@
 
 /**
 * Basic tokenomics 
-* 7% fee ( 5% burned , 2% marketing account)
+* 7% fee ( 5% burned , 1% marketing account , 1% telos reserve )
 */
 
 pragma solidity ^0.6.12;
