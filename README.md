@@ -1,5 +1,7 @@
 # DLOS-token
 
+Icon : 
+
 ✔️ 7% fee on every transactions  
 ✔️ 5% send to burning wallet  
 ✔️ 1% send to marketing wallet 0x32ce97bD6E59e360002FACa981C20092651068Af  
