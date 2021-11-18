@@ -1,8 +1,12 @@
 // SPDX-License-Identifier: MIT
 
+
 /**
 * Basic tokenomics 
 * 10% fee ( 3% burned , 1% marketing account , 2% telos reserve wallet , 4% liquidity pool)
+*  
+*
+* last submitted : 2021 / 11 / 18 UTC+8 5:11
 */
 
 
@@ -353,9 +357,9 @@ contract DLOS is Context, IERC20, Ownable {
     uint8 private _decimals = 0;
     uint8 public transfertimeout = 15;
     
-    uint256 public buringRate = 3;
+    uint256 public buringRate    = 3;
     uint256 public marketingRate = 1;
-    uint256 public reserveRate = 2;
+    uint256 public reserveRate   = 2;
     uint256 public liquidityRate = 4;
     
 
