@@ -6,7 +6,7 @@
 * 10% fee ( 3% burned , 1% marketing account , 2% telos reserve wallet , 4% liquidity pool)
 *  
 *
-* last submitted : 2021 / 11 / 18 UTC+8 5:11
+* last submitted : 2021 / 11 / 18 UTC+8  5:11
 */
 
 
