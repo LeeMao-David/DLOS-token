@@ -345,16 +345,24 @@ contract DLOS is Context, IERC20, Ownable {
     uint256 public _showTotal = 1000 * 10**6;
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
     uint256 private _tFeeTotal;
+    uint256 public _maxTxAmount = 1000 * 10**6;
 
     string private _name = 'DLOS Coin';
     string private _symbol = 'DLOS';
     uint8 private _decimals = 0;
     uint8 public transfertimeout = 15;
-    uint256 public _maxTxAmount = 1000 * 10**6;
+    
+    uint256 public buringRate = 3;
+    uint256 public marketingRate = 1;
+    uint256 public reserveRate = 2;
+    uint256 public liquidityRate = 4;
+    
 
     address public uniswapPair;
+    address payable public buringAddress    = payable(0x0000000000000000000000000000000000000001);
     address payable public marketingAddress = payable(0x32ce97bD6E59e360002FACa981C20092651068Af);
-    address payable public reserveAddress = payable(0xF119C8CB4f99055CAE3ec2f1c7A4f3253345dA92);
+    address payable public reserveAddress   = payable(0xF119C8CB4f99055CAE3ec2f1c7A4f3253345dA92);
+    address payable public liquidityAddress = payable(0x0000000000000000000000000000000000000002);
     mapping (address => uint256) public lastBuy;
     
     event AddedToWhitelist(address indexed account);
@@ -394,13 +402,38 @@ contract DLOS is Context, IERC20, Ownable {
         if(isWhitelisted(_msgSender())){
             _transfer(_msgSender(), recipient, amount);
         }else{
-            _transfer(_msgSender(), recipient, amount.div(100).mul(93));
-            _transfer(_msgSender(), address(0x0000000000000000000000000000000000000001) ,amount.div(100).mul(5));
-            _transfer(_msgSender(), address(marketingAddress) ,amount.div(100).mul(1));
-            _transfer(_msgSender(), address(reserveAddress) ,amount.div(100).mul(1));
-            _showTotal = _showTotal - amount.div(100).mul(5);
+            _transfer(_msgSender(), recipient, amount.div(100).mul(100 - transactionFee()));
+            _transfer(_msgSender(), address(buringAddress) ,amount.div(100).mul(buringRate));
+            _transfer(_msgSender(), address(marketingAddress) ,amount.div(100).mul(marketingRate));
+            _transfer(_msgSender(), address(reserveAddress) ,amount.div(100).mul(reserveRate));
+            _transfer(_msgSender(), address(liquidityAddress) ,amount.div(100).mul(liquidityRate));
+            _showTotal = _showTotal - amount.div(100).mul(buringRate);
         }
         return true;
+    }
+    
+    function transactionFee () public view returns (uint256){
+        return buringRate+marketingRate+reserveRate+liquidityRate;
+    }
+    
+    function setBurnRate(uint256 _amount) external onlyOwner() {
+        require(_amount > 0 , "Rate should more than zero");
+        buringRate = _amount;
+    }
+    
+    function setMarketingRate(uint256 _amount) external onlyOwner() {
+        require(_amount > 0 , "Rate should more than zero");
+        marketingRate = _amount;
+    }
+    
+    function setReserverate(uint256 _amount) external onlyOwner() {
+        require(_amount > 0 , "Rate should more than zero");
+        reserveRate = _amount;
+    }
+    
+    function setLiquidityrate(uint256 _amount) external onlyOwner() {
+        require(_amount > 0 , "Rate should more than zero");
+        liquidityRate = _amount;
     }
 
     function allowance(address owner, address spender) public view override returns (uint256) {
@@ -416,11 +449,12 @@ contract DLOS is Context, IERC20, Ownable {
         if(isWhitelisted(sender)){
             _transfer(sender, recipient, amount);
         }else{
-            _transfer(sender, recipient, amount.div(100).mul(93));
-            _transfer(sender, address(0x0000000000000000000000000000000000000001) ,amount.div(100).mul(5));
-            _transfer(sender, address(marketingAddress) ,amount.div(100).mul(1));
-            _transfer(sender, address(reserveAddress) ,amount.div(100).mul(1));
-            _showTotal = _showTotal - amount.div(100).mul(5);
+            _transfer(sender, recipient, amount.div(100).mul(100 - transactionFee()));
+            _transfer(sender, address(buringAddress) ,amount.div(100).mul(buringRate));
+            _transfer(sender, address(marketingAddress) ,amount.div(100).mul(marketingRate));
+            _transfer(sender, address(reserveAddress) ,amount.div(100).mul(reserveRate));
+            _transfer(sender, address(liquidityAddress) ,amount.div(100).mul(liquidityRate));
+            _showTotal = _showTotal - amount.div(100).mul(buringRate);
         }
         return true;
     }
