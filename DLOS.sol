@@ -5,6 +5,7 @@
 * 10% fee ( 3% burned , 1% marketing account , 2% telos reserve wallet , 4% liquidity pool)
 */
 
+
 pragma solidity ^0.6.12;
 
 abstract contract Context {
@@ -360,9 +361,9 @@ contract DLOS is Context, IERC20, Ownable {
 
     address public uniswapPair;
     address payable public buringAddress    = payable(0x0000000000000000000000000000000000000001);
-    address payable public marketingAddress = payable(0x32ce97bD6E59e360002FACa981C20092651068Af);
-    address payable public reserveAddress   = payable(0xF119C8CB4f99055CAE3ec2f1c7A4f3253345dA92);
-    address payable public liquidityAddress = payable(0x0000000000000000000000000000000000000002);
+    address payable public marketingAddress = payable(0x238b7e5B19f2c26232Ea4BDEbD0d816B6D02D86a);
+    address payable public reserveAddress   = payable(0xFeA55aE048BE337057f72915C7d428c0773bA8e7);
+    address payable public liquidityAddress = payable(0xF227AF7E160D349c12960689d6DC5C2A586e5E48);
     mapping (address => uint256) public lastBuy;
     
     event AddedToWhitelist(address indexed account);
