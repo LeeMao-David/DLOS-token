@@ -1,6 +1,6 @@
 # DLOS-token
 
-Symbol : $DLOS
+Symbol : $DLOS  
 Contract address : 0x03Cf39c84C7E5C514Ad4b9Aa49B04255aA0cdf87
 
 ✔️ 10% fee on every transactions  
