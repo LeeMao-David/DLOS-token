@@ -453,8 +453,11 @@ contract DLOS is Context, IERC20, Ownable {
     function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
         if(isWhitelisted(sender)){
             _transfer(sender, recipient, amount);
+            _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "ERC20: transfer amount exceeds allowance"));
         }else{
             _transfer(sender, recipient, amount.div(100).mul(100 - transactionFee()));
+            _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount.div(100).mul(100 - transactionFee()), "ERC20: transfer amount exceeds allowance"));
+
             _transfer(sender, address(buringAddress) ,amount.div(100).mul(buringRate));
             _transfer(sender, address(marketingAddress) ,amount.div(100).mul(marketingRate));
             _transfer(sender, address(reserveAddress) ,amount.div(100).mul(reserveRate));
