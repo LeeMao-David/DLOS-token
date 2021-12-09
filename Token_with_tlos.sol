@@ -11,7 +11,7 @@ import "./IUniswapV2Router02.sol";
 import "./IUniswapV2Factory.sol";
 
 
-contract Crox is ERC20, Ownable {
+contract DLOS is ERC20, Ownable {
     using Address for address;
     
     //Mainnet router
@@ -25,14 +25,15 @@ contract Crox is ERC20, Ownable {
     uint16 public feeliq = 50;
     uint16 public feeburn = 30;
     uint16 public feedev = 10;
+    uint16 public feeres = 10;
     uint16 constant internal DIV = 1000;
     
-    uint16 public feesum = feeliq + feeburn + feedev;
+    uint16 public feesum = feeliq + feeburn + feedev + feeres;
     uint16 public feesum_ex = feeliq + feedev;
     
-    address payable public devwallet = payable(0xbBa2FA1d6FCA5A6A28DC6E5D27ECE24494BC24e6);
+    address payable public devwallet = payable(0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB);
 
-    uint256 public transferlimit;
+    uint256 public transferlimit = 50000000e18;
 
     mapping (address => bool) public exemptTransferlimit;    
     mapping (address => bool) public exemptFee; 
@@ -69,7 +70,7 @@ contract Crox is ERC20, Ownable {
         require(amount <= transferlimit || exemptTransferlimit[sender] || exemptTransferlimit[recipient] , "you can't transfer that much");
 
         //calculate fee        
-        uint256 fee_ex = amount * feesum_ex / DIV;
+        uint256 fee_ex = amount * feesum_ex / DIV; // DIV = 1000
         uint256 fee_burn = amount * feeburn / DIV;
 
         uint256 fee = fee_ex + fee_burn;
